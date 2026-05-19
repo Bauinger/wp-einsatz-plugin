@@ -1,0 +1,703 @@
+/* ── WP Einsatz Plugin – Frontend Styles ──────────────────────────────────── */
+
+:root {
+    --einsatz-brand-color: #ef4444;
+    --einsatz-tech-color:  #f59e0b;
+    --einsatz-schad-color: #22c55e;
+    --einsatz-text:        #1e293b;
+    --einsatz-text-muted:  #64748b;
+    --einsatz-border:      #e2e8f0;
+    --einsatz-bg:          #f8fafc;
+    --einsatz-radius:      8px;
+    --einsatz-radius-sm:   4px;
+    --einsatz-shadow:      0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+    --einsatz-shadow-md:   0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+}
+
+/* ── Badge ─────────────────────────────────────────────────────────────────── */
+
+.einsatz-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: var(--einsatz-radius-sm);
+    font-weight: 700;
+    font-size: .85em;
+    letter-spacing: .05em;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.einsatz-badge--lg {
+    font-size: 1.1em;
+    padding: 4px 14px;
+    border-radius: var(--einsatz-radius-sm);
+}
+
+/* ── Single Post: Header ────────────────────────────────────────────────────── */
+
+.einsatz-single-header {
+    margin-bottom: 2rem;
+    border-radius: var(--einsatz-radius);
+    overflow: hidden;
+    box-shadow: var(--einsatz-shadow-md);
+}
+
+.einsatz-header-banner {
+    padding: 1rem 1.5rem;
+    color: #fff;
+}
+
+.einsatz-header-banner-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+}
+
+.einsatz-header-stufe {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.einsatz-header-stufe-code {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: .05em;
+    line-height: 1;
+    text-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+
+.einsatz-header-icon {
+    font-size: 1.5rem;
+}
+
+.einsatz-header-typ {
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: .9;
+}
+
+.einsatz-header-datum {
+    font-size: .95rem;
+    opacity: .9;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.einsatz-header-dauer {
+    background: rgba(255,255,255,.2);
+    padding: 1px 8px;
+    border-radius: 20px;
+    font-size: .85em;
+}
+
+.einsatz-header-nummer {
+    font-size: .85rem;
+    opacity: .75;
+    font-family: monospace;
+    margin-left: auto;
+}
+
+/* Detail Bar */
+.einsatz-detail-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+    background: #fff;
+    border-top: 1px solid var(--einsatz-border);
+}
+
+.einsatz-detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    padding: .875rem 1.25rem;
+    border-right: 1px solid var(--einsatz-border);
+}
+
+.einsatz-detail-item:last-child { border-right: none; }
+
+.einsatz-detail-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.einsatz-detail-label {
+    display: block;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--einsatz-text-muted);
+    font-weight: 600;
+}
+
+.einsatz-detail-value {
+    display: block;
+    font-size: .95rem;
+    color: var(--einsatz-text);
+    font-weight: 500;
+}
+
+.einsatz-detail-value a {
+    color: var(--einsatz-text);
+    text-decoration: underline dotted;
+}
+
+.einsatz-detail-value a:hover { text-decoration: underline; }
+
+/* Fahrzeuge Bar */
+.einsatz-fahrzeuge-bar {
+    background: var(--einsatz-bg);
+    border-top: 1px solid var(--einsatz-border);
+    padding: .75rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+.einsatz-fahrzeuge-label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--einsatz-text-muted);
+    white-space: nowrap;
+}
+
+.einsatz-fahrzeuge-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+}
+
+.einsatz-fahrzeug-tag {
+    background: #fff;
+    border: 1px solid var(--einsatz-border);
+    border-radius: 20px;
+    padding: 2px 12px;
+    font-size: .82rem;
+    color: var(--einsatz-text);
+    font-weight: 500;
+}
+
+/* ── Archive & List ─────────────────────────────────────────────────────────── */
+
+.einsatz-archive-page {
+    padding: 1rem 0;
+}
+
+.einsatz-archive-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.einsatz-archive-header {
+    margin-bottom: 1.5rem;
+}
+
+.einsatz-archive-title {
+    margin: 0 0 .25rem;
+    font-size: 2rem;
+}
+
+.einsatz-archive-subtitle {
+    color: var(--einsatz-text-muted);
+    margin: 0;
+}
+
+/* Filter Bar */
+.einsatz-filter-bar {
+    background: #fff;
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--einsatz-shadow);
+}
+
+.einsatz-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: .75rem;
+}
+
+.einsatz-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    min-width: 140px;
+}
+
+.einsatz-filter-group label {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 700;
+    color: var(--einsatz-text-muted);
+}
+
+.einsatz-filter-group select {
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius-sm);
+    padding: .4rem .75rem;
+    font-size: .9rem;
+    background: #fff;
+    cursor: pointer;
+}
+
+.einsatz-filter-btn {
+    background: var(--einsatz-text);
+    color: #fff;
+    border: none;
+    border-radius: var(--einsatz-radius-sm);
+    padding: .45rem 1rem;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.einsatz-filter-btn:hover { background: #334155; }
+
+.einsatz-filter-reset {
+    align-self: flex-end;
+    color: var(--einsatz-text-muted);
+    font-size: .85rem;
+    text-decoration: none;
+    padding: .45rem .5rem;
+}
+
+.einsatz-filter-reset:hover { color: var(--einsatz-brand-color); }
+
+.einsatz-result-count {
+    font-size: .85rem;
+    color: var(--einsatz-text-muted);
+    margin-bottom: .75rem;
+}
+
+/* Einsatz Item Card */
+.einsatz-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.einsatz-item {
+    background: #fff;
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius);
+    padding: 1rem 1.25rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    box-shadow: var(--einsatz-shadow);
+    transition: box-shadow .15s, transform .15s;
+}
+
+.einsatz-item:hover {
+    box-shadow: var(--einsatz-shadow-md);
+    transform: translateY(-1px);
+}
+
+.einsatz-item--compact {
+    padding: .75rem 1rem;
+    gap: .75rem;
+}
+
+.einsatz-item-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+.einsatz-item-date-block {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    text-align: center;
+}
+
+.einsatz-item-date {
+    font-size: .75rem;
+    color: var(--einsatz-text-muted);
+    white-space: nowrap;
+}
+
+.einsatz-item-dauer {
+    font-size: .7rem;
+    color: var(--einsatz-text-muted);
+    white-space: nowrap;
+}
+
+.einsatz-item-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem .75rem;
+    margin-bottom: .3rem;
+}
+
+.einsatz-item-typ-badge,
+.einsatz-item-typ {
+    font-size: .75rem;
+    background: var(--einsatz-bg);
+    border: 1px solid var(--einsatz-border);
+    border-radius: 20px;
+    padding: 1px 10px;
+    color: var(--einsatz-text-muted);
+    font-weight: 600;
+}
+
+.einsatz-item-title {
+    margin: 0 0 .25rem;
+    font-size: 1.1rem;
+    line-height: 1.35;
+}
+
+.einsatz-item-title a {
+    color: var(--einsatz-text);
+    text-decoration: none;
+}
+
+.einsatz-item-title a:hover { text-decoration: underline; }
+
+.einsatz-item-stichwort {
+    margin: 0 0 .3rem;
+    font-size: .9rem;
+    color: var(--einsatz-text-muted);
+}
+
+.einsatz-item-ort {
+    margin: 0 0 .3rem;
+    font-size: .85rem;
+    color: var(--einsatz-text-muted);
+}
+
+.einsatz-item-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem .75rem;
+    font-size: .8rem;
+    color: var(--einsatz-text-muted);
+    margin-top: .3rem;
+}
+
+.einsatz-item-right {
+    display: flex;
+    align-items: center;
+}
+
+.einsatz-read-more {
+    display: inline-block;
+    background: var(--einsatz-bg);
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius-sm);
+    padding: .4rem .9rem;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--einsatz-text);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .15s, border-color .15s;
+}
+
+.einsatz-read-more:hover {
+    background: var(--einsatz-text);
+    color: #fff;
+    border-color: var(--einsatz-text);
+}
+
+/* Pagination */
+.einsatz-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .4rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--einsatz-border);
+}
+
+.einsatz-pagination .page-numbers,
+.einsatz-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 .6rem;
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius-sm);
+    font-size: .9rem;
+    text-decoration: none;
+    color: var(--einsatz-text);
+    background: #fff;
+    transition: background .15s;
+}
+
+.einsatz-pagination .page-numbers.current,
+.einsatz-page-btn.active {
+    background: var(--einsatz-text);
+    color: #fff;
+    border-color: var(--einsatz-text);
+    font-weight: 700;
+}
+
+.einsatz-pagination .page-numbers:hover:not(.current),
+.einsatz-page-btn:hover:not(.active) {
+    background: var(--einsatz-bg);
+}
+
+.einsatz-no-results {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--einsatz-text-muted);
+}
+
+/* ── Statistik ──────────────────────────────────────────────────────────────── */
+
+.einsatz-statistik {
+    font-family: inherit;
+}
+
+.einsatz-stat-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+}
+
+.einsatz-stat-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.einsatz-year-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.einsatz-year-tab {
+    padding: .25rem .75rem;
+    border: 1px solid var(--einsatz-border);
+    border-radius: 20px;
+    font-size: .82rem;
+    text-decoration: none;
+    color: var(--einsatz-text-muted);
+    background: #fff;
+    transition: background .12s;
+}
+
+.einsatz-year-tab.active,
+.einsatz-year-tab:hover {
+    background: var(--einsatz-text);
+    color: #fff;
+    border-color: var(--einsatz-text);
+}
+
+.einsatz-stat-overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1.5rem;
+}
+
+.einsatz-stat-card {
+    flex: 1;
+    min-width: 140px;
+    background: #fff;
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius);
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+    box-shadow: var(--einsatz-shadow);
+}
+
+.einsatz-stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--einsatz-text);
+    line-height: 1;
+}
+
+.einsatz-stat-label {
+    display: block;
+    font-size: .8rem;
+    color: var(--einsatz-text-muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: .35rem;
+    font-weight: 600;
+}
+
+.einsatz-stat-section {
+    margin-bottom: 1.5rem;
+}
+
+.einsatz-stat-section h4 {
+    margin: 0 0 .75rem;
+    font-size: 1rem;
+    color: var(--einsatz-text-muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 700;
+}
+
+/* Bar Chart */
+.einsatz-bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.einsatz-bar-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 80px;
+    align-items: center;
+    gap: .75rem;
+}
+
+.einsatz-bar-label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--einsatz-text);
+}
+
+.einsatz-bar-track {
+    height: 24px;
+    background: var(--einsatz-bg);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.einsatz-bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width .4s ease;
+}
+
+.einsatz-bar-value {
+    font-size: .85rem;
+    color: var(--einsatz-text);
+    font-weight: 600;
+    text-align: right;
+}
+
+.einsatz-bar-value small {
+    color: var(--einsatz-text-muted);
+    font-weight: 400;
+}
+
+/* Stufen Grid */
+.einsatz-stufen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: .5rem;
+}
+
+.einsatz-stufe-cell {
+    background: #fff;
+    border: 1px solid var(--einsatz-border);
+    border-radius: var(--einsatz-radius-sm);
+    padding: .6rem .75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.einsatz-stufe-count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--einsatz-text);
+}
+
+/* Monthly Chart */
+.einsatz-monthly-chart {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: flex-end;
+    gap: .25rem;
+    height: 100px;
+    padding: 1rem 0 0;
+    position: relative;
+}
+
+.einsatz-month-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25rem;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.einsatz-month-num {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--einsatz-text);
+    min-height: 1em;
+}
+
+.einsatz-month-bar {
+    width: 100%;
+    background: var(--einsatz-text);
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+    transition: height .3s ease;
+}
+
+.einsatz-month-label {
+    font-size: .65rem;
+    color: var(--einsatz-text-muted);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    .einsatz-item {
+        grid-template-columns: auto 1fr;
+    }
+    .einsatz-item-right {
+        grid-column: 2;
+    }
+    .einsatz-detail-bar {
+        grid-template-columns: 1fr;
+    }
+    .einsatz-detail-item {
+        border-right: none;
+        border-bottom: 1px solid var(--einsatz-border);
+    }
+    .einsatz-bar-row {
+        grid-template-columns: 90px 1fr 60px;
+    }
+    .einsatz-monthly-chart {
+        grid-template-columns: repeat(6, 1fr);
+        height: 140px;
+    }
+    .einsatz-month-col:nth-child(n+7) {
+        display: none;
+    }
+    .einsatz-header-banner-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .5rem;
+    }
+    .einsatz-header-nummer {
+        margin-left: 0;
+    }
+}
