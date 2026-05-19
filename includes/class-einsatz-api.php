@@ -28,8 +28,15 @@ defined('ABSPATH') || exit;
  *   "kraefte":        24,
  *   "fahrzeuge":      ["Florian Muster 1/44/1", "Florian Muster 1/23/1"],
  *   "nummer":         "E-2024-0042",
+ *   "bild_url":       "https://...",            // URL → wird als Titelbild gesetzt
+ *   "bilder":         ["https://...", "..."],   // Mehrere Bilder (erstes = Titelbild)
  *   "veroeffentlichen": true                    // Standard: true
  * }
+ *
+ * Bilder per Datei-Upload:
+ *   POST /einsatz/{id}/bild  multipart/form-data
+ *   Field "bild" = Bilddatei (jpg/png/gif/webp)
+ *   Field "titelbild" = "1" um als Beitragsbild zu setzen (Standard: 1)
  */
 class Einsatz_API {
 
@@ -76,6 +83,23 @@ class Einsatz_API {
                 'args'                => [
                     'id' => [
                         'validate_callback' => function($v) { return is_numeric($v); },
+                    ],
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, self::ROUTE . '/(?P<id>\d+)/bild', [
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [$this, 'upload_bild'],
+                'permission_callback' => [$this, 'check_api_key'],
+                'args'                => [
+                    'id' => [
+                        'validate_callback' => function($v) { return is_numeric($v); },
+                    ],
+                    'titelbild' => [
+                        'default'           => '1',
+                        'sanitize_callback' => 'sanitize_text_field',
                     ],
                 ],
             ],
@@ -208,6 +232,20 @@ class Einsatz_API {
             Einsatz_Meta::auto_set_category($post_id, $alarmstufe);
         }
 
+        // Handle images
+        $bild_urls = [];
+        if (!empty($params['bild_url'])) {
+            $bild_urls[] = esc_url_raw($params['bild_url']);
+        }
+        if (!empty($params['bilder']) && is_array($params['bilder'])) {
+            foreach ($params['bilder'] as $url) {
+                $bild_urls[] = esc_url_raw($url);
+            }
+        }
+        if (!empty($bild_urls)) {
+            $this->sideload_images($post_id, $bild_urls);
+        }
+
         return new WP_REST_Response([
             'success' => true,
             'id'      => $post_id,
@@ -258,6 +296,65 @@ class Einsatz_API {
         return new WP_REST_Response($this->format_einsatz($post_id));
     }
 
+    public function upload_bild(WP_REST_Request $request) {
+        $post_id = (int) $request->get_param('id');
+        $post    = get_post($post_id);
+
+        if (!$post || $post->post_type !== 'einsatz') {
+            return new WP_Error('not_found', __('Einsatz nicht gefunden.', 'wp-einsatz'), ['status' => 404]);
+        }
+
+        $files = $request->get_file_params();
+        if (empty($files['bild'])) {
+            return new WP_Error('missing_file', __('Kein Bild übermittelt. Sende die Datei als Multipart-Feld "bild".', 'wp-einsatz'), ['status' => 400]);
+        }
+
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $file_type     = $files['bild']['type'] ?? '';
+        if (!in_array($file_type, $allowed_types, true)) {
+            return new WP_Error('invalid_type', __('Nur JPG, PNG, GIF und WebP sind erlaubt.', 'wp-einsatz'), ['status' => 415]);
+        }
+
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $attachment_id = media_handle_upload('bild', $post_id);
+
+        if (is_wp_error($attachment_id)) {
+            return new WP_Error('upload_failed', $attachment_id->get_error_message(), ['status' => 500]);
+        }
+
+        $set_as_titelbild = $request->get_param('titelbild') !== '0';
+        if ($set_as_titelbild) {
+            set_post_thumbnail($post_id, $attachment_id);
+        }
+
+        return new WP_REST_Response([
+            'success'   => true,
+            'bild_id'   => $attachment_id,
+            'bild_url'  => wp_get_attachment_url($attachment_id),
+            'titelbild' => (int) get_post_thumbnail_id($post_id) === $attachment_id,
+        ], 201);
+    }
+
+    private function sideload_images($post_id, array $urls) {
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $is_first = !has_post_thumbnail($post_id);
+
+        foreach ($urls as $url) {
+            if (empty($url)) continue;
+            $attachment_id = media_sideload_image($url, $post_id, null, 'id');
+            if (!is_wp_error($attachment_id) && $is_first) {
+                set_post_thumbnail($post_id, $attachment_id);
+                $is_first = false;
+            }
+        }
+    }
+
     private function format_einsatz($post_id) {
         $post = get_post($post_id);
         $meta = Einsatz_Helpers::get_einsatz_meta($post_id);
@@ -267,6 +364,14 @@ class Einsatz_API {
         if ($text_fahrzeuge) {
             $fahrzeuge_names = array_merge($fahrzeuge_names, explode(', ', $text_fahrzeuge));
         }
+
+        $thumbnail_id  = get_post_thumbnail_id($post_id);
+        $thumbnail_url = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'large') : null;
+
+        $gallery_ids   = get_post_meta($post_id, '_einsatz_bilder_gallery', true) ?: [];
+        $gallery_urls  = array_filter(array_map(function($id) {
+            return wp_get_attachment_image_url($id, 'medium_large') ?: null;
+        }, (array) $gallery_ids));
 
         return [
             'id'            => $post_id,
@@ -283,6 +388,8 @@ class Einsatz_API {
             'kraefte'       => (int) $meta['kraefte'],
             'fahrzeuge'     => $fahrzeuge_names,
             'nummer'        => $meta['nummer'],
+            'titelbild_url' => $thumbnail_url,
+            'bilder'        => array_values($gallery_urls),
             'veroeffentlicht' => get_post_status($post_id) === 'publish',
         ];
     }

@@ -151,13 +151,16 @@ class Einsatz_Settings {
                         <h3><?php esc_html_e('API Dokumentation', 'wp-einsatz'); ?></h3>
                         <p><?php esc_html_e('Verfügbare Endpunkte:', 'wp-einsatz'); ?></p>
                         <ul>
-                            <li><code>POST <?php echo esc_html(rest_url('einsatz/v1/einsatz')); ?></code><br>
+                            <li><code>POST /einsatz/v1/einsatz</code><br>
                                 <small><?php esc_html_e('Neuen Einsatz anlegen', 'wp-einsatz'); ?></small></li>
-                            <li><code>GET <?php echo esc_html(rest_url('einsatz/v1/einsatz')); ?></code><br>
+                            <li><code>GET /einsatz/v1/einsatz</code><br>
                                 <small><?php esc_html_e('Einsätze abrufen', 'wp-einsatz'); ?></small></li>
-                            <li><code>GET <?php echo esc_html(rest_url('einsatz/v1/einsatz/{id}')); ?></code><br>
+                            <li><code>GET /einsatz/v1/einsatz/{id}</code><br>
                                 <small><?php esc_html_e('Einzelnen Einsatz abrufen', 'wp-einsatz'); ?></small></li>
+                            <li><code>POST /einsatz/v1/einsatz/{id}/bild</code><br>
+                                <small><?php esc_html_e('Bild hochladen (multipart, Feld: "bild")', 'wp-einsatz'); ?></small></li>
                         </ul>
+                        <p><em><?php esc_html_e('Bilder können auch direkt beim Anlegen via "bild_url" oder "bilder": [...] im JSON gesetzt werden.', 'wp-einsatz'); ?></em></p>
                         <p><strong><?php esc_html_e('Authentication Header:', 'wp-einsatz'); ?></strong><br>
                         <code>X-Einsatz-API-Key: &lt;key&gt;</code></p>
                     </div>

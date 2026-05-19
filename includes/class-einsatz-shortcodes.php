@@ -132,9 +132,11 @@ class Einsatz_Shortcodes {
     public function archiv($atts) {
         $atts = shortcode_atts([
             'pro_seite' => 10,
+            'modus'     => 'karten',   // 'karten' oder 'liste'
         ], $atts, 'einsatz_archiv');
 
         $per_page   = (int) $atts['pro_seite'];
+        $modus      = in_array($atts['modus'], ['karten','liste'], true) ? $atts['modus'] : 'karten';
         $all_years  = Einsatz_Helpers::get_available_years();
         $current_year = isset($_GET['ea_jahr'])  ? (int) $_GET['ea_jahr']  : '';
         $current_type = isset($_GET['ea_typ'])   ? sanitize_text_field($_GET['ea_typ'])   : '';
@@ -235,9 +237,13 @@ class Einsatz_Shortcodes {
                         $query->found_posts
                     ); ?>
                 </p>
-                <div class="einsatz-list">
+                <div class="<?php echo $modus === 'karten' ? 'einsatz-card-grid' : 'einsatz-list'; ?>">
                     <?php while ($query->have_posts()) : $query->the_post(); ?>
-                        <?php $this->render_archive_item(get_the_ID()); ?>
+                        <?php if ($modus === 'karten') : ?>
+                            <?php $this->render_card(get_the_ID()); ?>
+                        <?php else : ?>
+                            <?php $this->render_archive_item(get_the_ID()); ?>
+                        <?php endif; ?>
                     <?php endwhile; wp_reset_postdata(); ?>
                 </div>
 
@@ -307,7 +313,63 @@ class Einsatz_Shortcodes {
         return ob_get_clean();
     }
 
-    // ── Shared render helper ─────────────────────────────────────────────────
+    // ── Shared render helpers ────────────────────────────────────────────────
+
+    private function render_card($post_id) {
+        $meta       = Einsatz_Helpers::get_einsatz_meta($post_id);
+        $stufe      = $meta['alarmstufe'];
+        $color      = $stufe ? Einsatz_Helpers::get_alarmstufe_color($stufe) : '#94a3b8';
+        $dark       = $stufe ? Einsatz_Helpers::get_gradient_dark($stufe)    : '#334155';
+        $gradient   = "linear-gradient(135deg,{$dark},{$color})";
+        $datum_short= $meta['datum'] ? Einsatz_Helpers::format_date_short($meta['datum']) : get_the_date('d.m.Y');
+        $dauer      = Einsatz_Helpers::get_duration_string($meta['datum'], $meta['einsatzende']);
+        $has_img    = has_post_thumbnail($post_id);
+        $fz_count   = count((array) $meta['fahrzeuge']);
+        ?>
+        <article class="einsatz-card" id="einsatz-sc-<?php echo $post_id; ?>">
+            <a href="<?php echo esc_url(get_permalink($post_id)); ?>" class="einsatz-card-link">
+                <div class="einsatz-card-media" style="background:<?php echo esc_attr($gradient); ?>">
+                    <?php if ($has_img) : ?>
+                        <?php echo get_the_post_thumbnail($post_id, 'medium_large', ['class' => 'einsatz-card-img', 'loading' => 'lazy']); ?>
+                        <div class="einsatz-card-overlay"></div>
+                    <?php endif; ?>
+                    <div class="einsatz-card-media-top">
+                        <?php if ($stufe) : ?>
+                            <span class="einsatz-badge einsatz-card-badge"
+                                  style="background:rgba(0,0,0,.4);color:#fff;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+                                <?php echo esc_html($stufe); ?>
+                            </span>
+                        <?php endif; ?>
+                        <span class="einsatz-card-date-overlay"><?php echo esc_html($datum_short); ?></span>
+                    </div>
+                    <?php if ($dauer) : ?>
+                        <span class="einsatz-card-dauer-overlay">&#8987; <?php echo esc_html($dauer); ?></span>
+                    <?php endif; ?>
+                </div>
+                <div class="einsatz-card-body">
+                    <?php if ($stufe) : ?>
+                        <span class="einsatz-card-typ-badge"><?php echo esc_html(Einsatz_Helpers::get_type_label($stufe)); ?></span>
+                    <?php endif; ?>
+                    <h3 class="einsatz-card-title"><?php echo esc_html(get_the_title($post_id)); ?></h3>
+                    <?php if ($meta['stichwort']) : ?>
+                        <p class="einsatz-card-stichwort"><?php echo esc_html($meta['stichwort']); ?></p>
+                    <?php endif; ?>
+                    <?php if ($meta['ort']) : ?>
+                        <p class="einsatz-card-ort">&#128205; <?php echo esc_html($meta['ort']); ?></p>
+                    <?php endif; ?>
+                    <div class="einsatz-card-stats">
+                        <?php if ($meta['kraefte']) : ?>
+                            <span>&#128101; <?php echo (int) $meta['kraefte']; ?> <?php esc_html_e('Kräfte', 'wp-einsatz'); ?></span>
+                        <?php endif; ?>
+                        <?php if ($fz_count) : ?>
+                            <span>&#128665; <?php printf(esc_html(_n('%d Fahrzeug','%d Fahrzeuge',$fz_count,'wp-einsatz')),$fz_count); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </a>
+        </article>
+        <?php
+    }
 
     private function render_archive_item($post_id, $compact = false) {
         $meta    = Einsatz_Helpers::get_einsatz_meta($post_id);

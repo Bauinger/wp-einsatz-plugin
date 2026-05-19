@@ -27,6 +27,7 @@ require_once EINSATZ_PLUGIN_DIR . 'includes/class-einsatz-fahrzeuge.php';
 require_once EINSATZ_PLUGIN_DIR . 'includes/class-einsatz-shortcodes.php';
 require_once EINSATZ_PLUGIN_DIR . 'includes/class-einsatz-api.php';
 require_once EINSATZ_PLUGIN_DIR . 'includes/class-einsatz-settings.php';
+require_once EINSATZ_PLUGIN_DIR . 'includes/class-einsatz-widgets.php';
 
 final class WP_Einsatz_Plugin {
 
@@ -52,6 +53,7 @@ final class WP_Einsatz_Plugin {
         new Einsatz_Shortcodes();
         new Einsatz_API();
         new Einsatz_Settings();
+        new Einsatz_Widgets();
     }
 
     public function load_textdomain() {

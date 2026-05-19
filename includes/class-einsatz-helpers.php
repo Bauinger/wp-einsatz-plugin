@@ -114,6 +114,12 @@ class Einsatz_Helpers {
         return $names;
     }
 
+    public static function get_gradient_dark($stufe) {
+        $prefix = self::get_alarmstufe_prefix($stufe);
+        $dark   = ['B' => '#7f1d1d', 'T' => '#78350f', 'S' => '#14532d'];
+        return $dark[$prefix] ?? '#1e293b';
+    }
+
     public static function get_available_years() {
         global $wpdb;
         $years = $wpdb->get_col(
